@@ -1,4 +1,5 @@
-import css from "./Header.module.css";
+import AuthNavigation from "@/components/AuthNavigation/AuthNavigation";
+import css from "@/components/Header/Header.module.css";
 import Link from "next/link";
 
 const Header = () => {
@@ -19,6 +20,7 @@ const Header = () => {
               Notes
             </Link>
           </li>
+          <AuthNavigation />
         </ul>
       </nav>
     </header>

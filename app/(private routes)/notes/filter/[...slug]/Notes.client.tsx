@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useDebouncedCallback } from "use-debounce";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { fetchNotes } from "@/lib/api";
+import { fetchNotes } from "@/lib/api/clientApi";
 import css from "@/components/NotesPage/NotesPage.module.css";
 
 import Pagination from "@/components/Pagination/Pagination";

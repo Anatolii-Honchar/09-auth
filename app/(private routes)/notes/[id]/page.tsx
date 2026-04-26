@@ -1,5 +1,5 @@
 import NoteDetailsClient from "./NoteDetails.client";
-import { fetchNoteById } from "@/lib/api";
+import { fetchNoteById } from "@/lib/api/serverApi";
 import {
   QueryClient,
   HydrationBoundary,
@@ -8,33 +8,31 @@ import {
 import { Metadata } from "next";
 
 interface NoteProps {
-  params: Promise<{ id: string }>;
+  params: { id: string }; // ✅ FIX
 }
 
 export async function generateMetadata({
   params,
 }: NoteProps): Promise<Metadata> {
-  const { id } = await params;
+  const { id } = params; // ✅ без await
+
   const note = await fetchNoteById(id);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-  const title = note.title;
-  const description = note.content?.slice(0, 120) || "Note details";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   return {
-    title,
-    description,
+    title: note.title,
+    description: note.content?.slice(0, 120) || "Note details",
     openGraph: {
-      title,
-      description,
+      title: note.title,
+      description: note.content,
       url: `${baseUrl}/notes/${id}`,
       images: [
         {
           url: `${baseUrl}/og-image.jpg`,
           width: 1200,
           height: 630,
-          alt: title,
+          alt: note.title,
         },
       ],
     },
@@ -42,7 +40,7 @@ export async function generateMetadata({
 }
 
 async function NoteDetailsPage({ params }: NoteProps) {
-  const { id } = await params;
+  const { id } = params;
 
   const queryClient = new QueryClient();
 
